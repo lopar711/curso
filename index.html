@@ -3,8 +3,24 @@
     <head>
         <meta charset="utf-8">
         <title>Pais JS Class</title>
-        <link rel="stylesheet" href="./assets/pure.css" />
-        
+        <!--<link rel="stylesheet" href="./assets/pure.css" />-->
+        <style type="text/css">
+            td{
+               padding:20px; 
+               border: 1px solid #000;
+               margin: 0 auto;
+               border-radius: 5px;;
+            }
+            th{
+                border:1px solid #999;
+                background-color: chocolate;
+            }
+
+            .especial{
+                background-color: darkolivegreen;
+                cursor: pointer;
+            }
+        </style>
         <!--Para poder usar la importación de clases en js, 
             es necesario importar como módulo -->
         <script type="module">
@@ -44,6 +60,15 @@
 
                     for(let x = 0; x < Object.keys(pais).length; x++){
                         const celda = document.createElement('td');
+
+                        if(Object.values(pais)[x] == "Bogota"){
+                            celda.classList.add("especial");
+                            celda.addEventListener("click", ()=>{
+                                alert("Hola desde Bogotá");
+                            })
+                        } 
+                   
+
                         celda.innerText = Object.values(pais)[x];
                         fila.append(celda);
                     }
@@ -104,7 +129,7 @@
                 </tr>
                 </thead>
                 <tbody id="tabla_paises_dos">
-                   
+
                 </tbody>
             </table>
         
