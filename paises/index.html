@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Pais JS Class</title>
+        <!--<link rel="stylesheet" href="./assets/pure.css" />-->
+        <style type="text/css">
+            td{
+               padding:20px; 
+               border: 1px solid #000;
+               margin: 0 auto;
+               border-radius: 5px;;
+            }
+            th{
+                border:1px solid #999;
+                background-color: chocolate;
+            }
+
+            .especial{
+                background-color: darkolivegreen;
+                cursor: pointer;
+            }
+        </style>
+        <!--Para poder usar la importación de clases en js, 
+            es necesario importar como módulo -->
+        <script type="module">
+
+            //importar la clase Pais desde el directorio ./pais.js pero 
+            //javascript acepta el nombre de la clase como namespace
+            import Pais from './Pais';
+
+            //array que representa los datos de
+            // entrada para el constructor de un Pais
+            const mexico = [];
+                mexico['nom'] = "Mexico";
+                mexico['cap'] = "CDMX";
+                mexico['cod'] = "MEX";
+            //objeto que representa la informacion de un pais
+                const colombia = {
+                    'nom':'Colombia',
+                    'cap':'Bogota',
+                    'cod':'COL'
+                }
+            //Instanciacion de clases o creación de objetos
+                let mex = new Pais(mexico);
+                let col = new Pais(colombia);
+            //estados unidos se crea inline, sin usar una variable
+                let usa = new Pais({nom:'Estados Unidos',cap:'Washington DC',cod:'USA'});
+                
+                
+                //crea un array con los obj país ya creados
+                let listaPaises = [mex, col, usa];
+
+                //genera el html que corresponde a una fila de la tabla "tr"
+                //recorre, los elementos del array "pais" que recibe como param
+                //crea los elementos "td" que son las celdas de la tabla
+                //y coloca los valores dentro de cada celda
+                function crearContenedor(pais){
+                    let fila = document.createElement('tr');
+
+                    for(let x = 0; x < Object.keys(pais).length; x++){
+                        const celda = document.createElement('td');
+
+                        if(Object.values(pais)[x] == "Bogota"){
+                            celda.classList.add("especial");
+                            celda.addEventListener("click", ()=>{
+                                alert("Hola desde Bogotá");
+                            })
+                        } 
+                   
+
+                        celda.innerText = Object.values(pais)[x];
+                        fila.append(celda);
+                    }
+                        return fila;
+                }
+
+                //esta funcion recibe 2 parametros, el primero es la tabla
+                //donde se dibujará el pais y el segundo param, 
+                //es el arreglo/objeto con los datos del pais
+                function imprimirLista(tabla,arrPais){
+                    //iteracion segun los elementos del array, o sea lo que devuelve
+                    //arrPais.length
+                    for(let x = 0; x < arrPais.length; x++){
+                        //a la tabla que llega como parametro se coloca 
+                        ///recursivamente el contenedor del arreglo
+                        tabla.append(crearContenedor(arrPais[x]));
+                    }
+                }
+
+
+            //esta funcion se usa para esperar la carga de la ventana,
+            //antes de eso los elementos del DOM no estarán disponibles    
+            window.onload = ()=>{
+
+                //seleccionamos la tabla_paises en este caso es su tbody
+                let tablaPaises = document.getElementById('tabla_paises');
+                //ejecutamos funcion pasando tabla y lista de paises como paramentros
+                imprimirLista(tablaPaises,listaPaises);
+                imprimirLista(document.getElementById('tabla_paises_dos'), listaPaises);
+            }
+
+        </script>
+
+    </head>
+    <body>
+
+        <table class="pure-table pure-table-bordered">
+            <thead>
+               <tr>
+                <th>Nombre del País</th>
+                <th>Capital</th>
+                <th>Código</th>
+            </tr>
+            </thead>
+            <tbody id="tabla_paises">
+               
+            </tbody>
+        </table>
+        <br >
+        <br >
+        <br >
+        <table class="pure-table pure-table-bordered">
+                <thead>
+                   <tr>
+                    <th>Nombre del País</th>
+                    <th>Capital</th>
+                    <th>Código</th>
+                </tr>
+                </thead>
+                <tbody id="tabla_paises_dos">
+
+                </tbody>
+            </table>
+        
+
+
+    </body>
+</html>
