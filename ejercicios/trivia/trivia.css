@@ -1,0 +1,86 @@
+body{
+    padding: 0;
+    margin: 0 auto;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: navy;
+}
+.contenedor{
+    width: 800px;
+    height: 600px;
+    margin: auto;
+    background-color:cadetblue;
+    
+}
+.auto_centrado{
+    display: block;
+    margin: auto;
+    width: 300px;
+    text-align: center;
+}
+.oculto{
+    display:none;
+}
+
+#titulo_tema{
+    color:cornsilk;
+    text-transform: capitalize;
+}
+
+#inicio{
+    position: relative;
+    width: 300px;
+    height: 50px;
+    top:calc(50% - 25px);
+    left:calc(50% - 150px);
+    
+}
+#inicio button{
+    background-color:navy;
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+    cursor: pointer;
+    color: papayawhip;
+    text-transform: uppercase;
+}
+#seleccion_temas button{
+    background-color:navy;
+    width: 100%;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    color: papayawhip;
+    text-transform: uppercase;
+    opacity: .7;
+}
+#seleccion_temas button:hover{
+    opacity: 1;
+}
+#trivia{
+    margin: auto;
+    text-align: center;
+}
+#trivia section{
+    text-align: center;
+}
+#trivia section p{
+    font-size: 30px;
+    color:rgb(73, 62, 45);
+}
+#trivia span{
+    text-transform: uppercase;
+}
+#btn_siguiente, .btn_volver{
+    background-color:navy;
+    width: 30%;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    color: papayawhip;
+    text-transform: uppercase;
+    opacity: .7;
+}
+#btn_siguiente:hover, .btn_volver:hover{
+    opacity: 1;
+}
+

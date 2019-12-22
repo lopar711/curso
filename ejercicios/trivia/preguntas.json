@@ -1,0 +1,58 @@
+{
+    "preguntas": {
+        "malcolm": {
+            "0": {
+                "pregunta": "¿Cuál es el apellido de la familia?",
+                "opciones": [
+                    "Walkman",
+                    "Williams",
+                    "Wilkerson",
+                    "Wololo"
+                ],
+                "respuesta": "Wilkerson"
+            },
+            "1": {
+                "pregunta": "¿Cuántas temporadas hubo?",
+                "opciones": [
+                    "6",
+                    "8",
+                    "4",
+                    "7"
+                ],
+                "respuesta": "7"
+            }
+        },
+        "los simpson": {
+            "0": {
+                "pregunta": "¿Quién es el creador de Los Simpson?",
+                "opciones": [
+                    "OJ Simpson",
+                    "Seth MacFarlane",
+                    "Matt Groening",
+                    "Steven Spielberg"
+                ],
+                "respuesta": "Matt Groening"
+            },
+            "1": {
+                "pregunta": "La cerveza preferida de Homer es de la marca…",
+                "opciones": [
+                    "Daff",
+                    "Duff",
+                    "Bud",
+                    "Stela"
+                ],
+                "respuesta": "Duff"
+            },
+            "2": {
+                "pregunta": "¿Qué significa la 'J' de Homer J. Simpson?",
+                "opciones": [
+                    "John",
+                    "Julius",
+                    "Jay",
+                    "Jeanuts"
+                ],
+                "respuesta": "Jay"
+            }
+        }
+    }
+}

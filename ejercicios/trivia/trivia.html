@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <meta charset="utf-8">
+        <title>trivia json</title>
+        <link rel="stylesheet" type="text/css" href="./trivia.css">
+        <script type="text/module" src="class/Preguntas.js"></script>
+        <script type="module">
+        
+            import Preguntas from "./class/Preguntas";
+
+            let listaPreguntas = Preguntas.cargarJson();
+            let trivia = [];
+            
+            const mostrar = (id)=>{
+                document.getElementById(id).classList.remove('oculto');
+            }
+
+            const ocultar = (id)=>{
+                document.getElementById(id).classList.add('oculto');
+            }
+
+            const colocarPregunta = (pregunta) =>{
+                document.getElementById('texto_pregunta').innerText = pregunta;
+            }
+
+            const colocarTema = (tema) =>{
+                let botonTema = document.createElement('button');
+                botonTema.innerText = tema;
+                botonTema.value = tema;
+                document.getElementById('seleccion_temas').appendChild(botonTema);
+                return botonTema;
+            }
+
+            const crearTrivia = (arr,tema)=>{
+                document.getElementById('tema_nombre').innerText = tema;
+                let trivia = [];
+                arr.forEach(elem =>{
+                    if(elem[0] === tema){
+                        for (let [key, value] of Object.entries(elem[1])) {
+                            trivia.push(value);
+                        }
+                    }
+                })
+                return trivia;
+            }
+
+            const iniciarTrivia = () =>{
+                ocultar('seleccion_temas');
+                mostrar('trivia');
+                colocarPregunta(trivia[0].pregunta);
+
+                document.getElementById('btn_siguiente').addEventListener("click", elem =>{
+                    trivia.splice(0, 1);
+                    if(trivia.length > 0){
+                    colocarPregunta(trivia[0].pregunta);
+                     }else{
+                         
+                         document.getElementById('texto_pregunta').innerText = "TERMINÓ LA TRIVIA TU PUNTUACION ES:";
+                         ocultar('btn_siguiente');
+                         let btn_volver  = document.createElement('button');
+                         btn_volver.innerText = "REINICIAR";
+                         btn_volver.classList.add("btn_volver");
+                         btn_volver.addEventListener("click",elem => {
+                            reiniciarTrivia();
+                         });
+                         document.getElementById('trivia').appendChild(btn_volver);
+                     }
+                
+                })
+            }
+            const reiniciarTrivia = ()=>{
+                document.location.href = document.location.href ;
+            }
+            const inicio = ()=>{
+                ocultar('inicio_btn');
+                mostrar('seleccion_temas');
+                listaPreguntas.then((preguntas)=>{
+                let arrTrivia = Object.entries(preguntas);
+
+                arrTrivia.forEach(elem => {
+                   let temaBoton = colocarTema(elem[0]);
+                   temaBoton.addEventListener("click",(evt)=> {
+                   trivia = crearTrivia(arrTrivia, evt.target.value);
+                   iniciarTrivia();
+                   });
+                });
+            });
+            }   
+            
+           window.onload = ()=>{
+            document.getElementById('inicio_btn').addEventListener("click", elem => inicio());
+           }
+                
+            
+             
+            
+        
+        </script>
+
+
+    </head>
+    <body>
+        <div class="contenedor">
+
+            <div id="inicio">
+                <button id="inicio_btn">INICIAR</button>
+            </div>
+            <div id="seleccion_temas" class="oculto">
+                <h3 class="auto_centrado">Temas:</h3>
+                
+            </div>
+            <div id="trivia" class="oculto">
+                <h3 class="auto_centrado">Tema:<span id="tema_nombre"></span></h3>
+            <section>
+                <p id="texto_pregunta"></p>
+                <button id="btn_siguiente">siguiente</button>
+            </section>
+            
+        </div>
+        </div>
+    </body>
+</html>
