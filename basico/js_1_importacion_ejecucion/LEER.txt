@@ -1,0 +1,11 @@
+En esta sección encontrarás lo básico sobre:
+
+UNO.HTML
+-El uso de Js en un documento HTML
+-Donde se escribe el código js
+-Donde se ejecuta js
+-Como ver la salida de la consola
+
+DOS.HTML
+-Como Importar importar un documento js
+-Como imprimir la salida en la pagina html 
