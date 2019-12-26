@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <meta charset="utf-8">
+        <title>trivia json</title>
+        <link rel="stylesheet" type="text/css" href="./trivia.css">
+
+
+        <script type="module">
+            /*importamos la clase Preguntas*/
+            import Preguntas from "./class/Preguntas";
+            /* guardar la promesa que devuelve el metodo estatico cargarJson() */
+            let listaPreguntas = Preguntas.cargarJson();
+            /*iniciamos un array para almacenar el cuerpo de la trivia*/
+            let trivia = [];
+            
+            let resultados = [];
+            
+            /*mostrar recibe el id  y quita la clase 'oculto' */
+            const mostrar = (id)=>{
+                document.getElementById(id).classList.remove('oculto');
+            }
+            /*ocultar recibe el id  y coloca la clase 'oculto' */
+            const ocultar = (id)=>{
+                document.getElementById(id).classList.add('oculto');
+            }
+
+            const colocarPregunta = (pregunta) =>{
+                document.getElementById('texto_pregunta').innerText = pregunta;
+            }
+            
+            const colocarTema = (tema) =>{
+                let botonTema = document.createElement('button');
+                botonTema.innerText = tema;
+                botonTema.value = tema;
+                document.getElementById('seleccion_temas').appendChild(botonTema);
+                return botonTema;
+            }
+
+            const crearTrivia = (arr,tema)=>{
+                document.getElementById('tema_nombre').innerText = tema;
+                let trivia = [];
+                arr.forEach(elem =>{
+                    if(elem[0] === tema){
+                        for (let [key, value] of Object.entries(elem[1])) {
+                            trivia.push(value);
+                        }
+                    }
+                })
+                return trivia;
+            }
+
+            const colocarOpciones = (opciones)=>{
+                document.getElementById('opciones').innerHTML = "";
+                opciones.forEach(opcion =>{
+                    let etiquetaRadio = document.createElement('label');
+                    etiquetaRadio.innerHTML = opcion;
+                    let opcionRadio = document.createElement('input');
+                    opcionRadio.type = 'radio';
+                    opcionRadio.value = opcion;
+                    opcionRadio.label = opcion;
+                    opcionRadio.name = 'opc';
+                    etiquetaRadio.appendChild(opcionRadio);
+                    document.getElementById('opciones').appendChild(etiquetaRadio);
+                })
+                
+            }
+
+            const guardarRespuesta =(res,correcta, preg)=>{
+                    resultados.push([preg,correcta, res]);
+            }
+            const calcularResultados = ()=>{
+                let puntaje = 0;
+                let cantPreguntas = 0;
+                resultados.forEach(res=>{
+                    if(res[1] === res[2]){
+                        puntaje++;
+                    }
+                    cantPreguntas++;
+                })
+                return [cantPreguntas,puntaje];
+            }
+            const mostratResultados = (arrRes)=>{
+                let contenedorResultado = document.createElement('div');
+                contenedorResultado.classList.add('resultados');
+                arrRes.forEach(res =>{
+                    let escorrecta = res[1] === res[2] ? true : false;
+                    let list = document.createElement('ul');
+                    res.forEach(r =>{
+                    let item = document.createElement('li');
+                    if(!escorrecta) item.classList.add('incorrecta');
+                    item.appendChild(document.createTextNode(r));
+                    list.appendChild(item);
+                    })
+                    contenedorResultado.append(list);
+                })
+                 
+                return contenedorResultado;
+            }
+
+            const finalizarTrivia = ()=>{
+                let puntajes = calcularResultados();
+                         
+                         document.getElementById('texto_pregunta').innerText = "TERMINÓ LA TRIVIA HAZ ACERTADO EN "+ puntajes[1]+" DE "+puntajes[0];
+                         document.getElementById('opciones').innerHTML = "";
+                         ocultar('btn_siguiente');
+                         let btn_volver  = document.createElement('button');
+                         btn_volver.innerText = "REINICIAR";
+                         btn_volver.classList.add("btn_volver");
+                         btn_volver.addEventListener("click",elem => {
+                            reiniciarTrivia();
+                         });
+                         let mostrarRes  = document.createElement('button');
+                         mostrarRes.innerText = "VER RESPUESTAS";
+                         mostrarRes.classList.add("btn_volver");
+                         mostrarRes.addEventListener("click",elem => {
+                           document.getElementById('opciones').append(mostratResultados(resultados));
+                           elem.target.parentNode.removeChild(elem.target);
+                         });
+                         document.getElementById('trivia').appendChild(btn_volver);
+                         document.getElementById('trivia').appendChild(mostrarRes);
+            }
+            const iniciarTrivia = () =>{
+                ocultar('seleccion_temas');
+                mostrar('trivia');
+
+                colocarPregunta(trivia[0].pregunta);
+                colocarOpciones(typeof(trivia[0].opciones) == 'object' ? trivia[0].opciones : JSON.parse(trivia[0].opciones));
+
+                document.getElementById('btn_siguiente').addEventListener("click", elem =>{
+                    guardarRespuesta(document.querySelector('input[name="opc"]:checked').value, trivia[0].respuesta, trivia[0].pregunta);
+                    
+                    trivia.splice(0,1);
+                    if(trivia.length > 0){
+                        colocarPregunta(trivia[0].pregunta);
+                        colocarOpciones(typeof(trivia[0].opciones) == 'object' ? trivia[0].opciones : JSON.parse(trivia[0].opciones));
+                   
+                     }else{
+                        finalizarTrivia();
+                     }
+                
+                })
+            }
+            const reiniciarTrivia = ()=>{
+                document.location.href = document.location.href ;
+            }
+
+            const inicio = ()=>{
+                ocultar('inicio_btn');
+                mostrar('seleccion_temas');
+                listaPreguntas.then((preguntas)=>{
+                let arrTrivia = Object.entries(preguntas);
+                arrTrivia.forEach(elem => {
+                   let temaBoton = colocarTema(elem[0]);
+                   temaBoton.addEventListener("click",(evt)=> {
+                   trivia = crearTrivia(arrTrivia, evt.target.value);
+                   iniciarTrivia();
+                   });
+                });
+            });
+            }   
+            
+           window.onload = ()=>{
+            document.getElementById('inicio_btn').addEventListener("click", elem => inicio());
+           }
+        
+        </script>
+
+
+    </head>
+    <body>
+        <div class="contenedor" id="contenedor">
+
+            <div id="inicio">
+                <button id="inicio_btn">INICIAR</button>
+            </div>
+
+            <div id="seleccion_temas" class="oculto">
+                <h3 class="auto_centrado">Temas:</h3>
+                
+            </div>
+
+            <div id="trivia" class="oculto">
+                <h3 class="auto_centrado">Tema:<span id="tema_nombre"></span></h3>
+            <section>
+                <p id="texto_pregunta"></p>
+                <p id="opciones"></p>
+                <button id="btn_siguiente">siguiente</button>
+            </section>
+        </div>
+        </div>
+    </body>
+</html>
